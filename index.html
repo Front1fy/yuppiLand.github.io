@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SIELLIA Coffee | QR Menu</title>
+
+<style>
+:root{
+  --orange:#ff8c00;
+  --glass:rgba(255,255,255,.08);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  color:#fff;
+}
+
+/* ===== NEON HEADER (ikonlar silindi, mərkəzə fokus) ===== */
+.neon-header-new{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#000000;
+  padding:30px 0;
+  box-shadow:0 0 25px #FF8C00;
+}
+
+.logo-text {
+  text-align:center;
+}
+
+/* SIELLIA yazısı arıza effekti ilə */
+.sielia-new {
+  font-family:'Arial Black', Arial, sans-serif;
+  font-size:56px;
+  font-weight:900;
+  letter-spacing:5px;
+  color:#fff;
+  text-shadow:
+    0 0 8px #fff,
+    0 0 20px #fff,
+    0 0 30px #FF8C00,
+    0 0 40px #FF8C00,
+    0 0 70px #FF8C00;
+  animation:glitch-sielia 2.5s infinite;
+}
+
+/* Coffee yazısı arıza effekti ilə */
+.coffee-new {
+  margin-top:4px;
+  font-family:'Arial',sans-serif;
+  font-weight:700;
+  font-size:36px;
+  color:white;
+  background:linear-gradient(90deg,#FF8C00,#FFB347);
+  padding:6px 20px;
+  border-radius:8px;
+  box-shadow:
+    0 0 20px #FF8C00,
+    inset 0 0 12px #FF8C00;
+  animation:glitch-coffee 2.5s infinite;
+  user-select:none;
+}
+
+/* ===== NEON ARIZA ANIMASİYALARI ===== */
+@keyframes glitch-sielia {
+  0%,20%,100%{text-shadow:0 0 8px #fff,0 0 20px #fff,0 0 30px #FF8C00,0 0 40px #FF8C00,0 0 70px #FF8C00; opacity:1; transform:translate(0,0);}
+  10%{text-shadow:0 0 4px #fff,0 0 12px #fff,0 0 15px #FF8C00,0 0 20px #FF8C00,0 0 40px #FF8C00; opacity:0.7; transform:translate(-2px,2px);}
+  30%{text-shadow:0 0 6px #fff,0 0 18px #fff,0 0 25px #FF8C00,0 0 30px #FF8C00,0 0 60px #FF8C00; opacity:1; transform:translate(2px,-1px);}
+  50%{text-shadow:0 0 2px #fff,0 0 10px #fff,0 0 20px #FF8C00,0 0 25px #FF8C00,0 0 50px #FF8C00; opacity:0.5; transform:translate(-1px,2px);}
+  70%{text-shadow:0 0 4px #fff,0 0 12px #fff,0 0 18px #FF8C00,0 0 22px #FF8C00,0 0 45px #FF8C00; opacity:0.6; transform:translate(2px,1px);}
+}
+
+@keyframes glitch-coffee {
+  0%,20%,100%{text-shadow:0 0 15px #FF8C00, inset 0 0 10px #FF8C00; opacity:1; transform:translate(0,0);}
+  10%{text-shadow:0 0 8px #FF8C00, inset 0 0 5px #FF8C00; opacity:0.6; transform:translate(1px,-1px);}
+  30%{text-shadow:0 0 12px #FF8C00, inset 0 0 8px #FF8C00; opacity:1; transform:translate(-1px,1px);}
+  50%{text-shadow:0 0 10px #FF8C00, inset 0 0 5px #FF8C00; opacity:0.5; transform:translate(2px,0);}
+  70%{text-shadow:0 0 8px #FF8C00, inset 0 0 4px #FF8C00; opacity:0.7; transform:translate(-1px,-1px);}
+}
+
+/* ===== MENU ===== */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:15px;
+}
+
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  border-radius:18px;
+  margin-bottom:18px;
+  overflow:hidden;
+  box-shadow:0 0 30px rgba(0,0,0,.6);
+}
+
+.card h2{
+  margin:0;
+  padding:16px 20px;
+  background:linear-gradient(90deg,var(--orange),#ffb347);
+  color:#000;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+}
+
+.card ul{
+  list-style:none;
+  margin:0;
+  padding:15px 20px;
+  display:none;
+  animation:fade .4s ease;
+}
+.card.open ul{display:block}
+
+.card li{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 0;
+  border-bottom:1px dashed rgba(255,255,255,.2);
+}
+
+.price{color:var(--orange);font-weight:bold}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(-10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.footer{
+  text-align:center;
+  padding:25px;
+  color:#aaa;
+  font-size:0.9rem;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sielia-new{font-size:42px}
+  .coffee-new{font-size:28px}
+  .neon-header-new{padding:20px 0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NEON HEADER (ikonlar silindi) -->
+<div class="neon-header-new">
+  <div class="logo-text">
+    <div class="sielia-new">SIEILIA</div>
+    <div class="coffee-new">Coffee</div>
+  </div>
+</div>
+
+<!-- MENYU KONTEYNER -->
+<div class="container">
+
+<!-- COFFEE -->
+<div class="card open">
+<h2 onclick="toggle(this)">☕ Coffee <span>▼</span></h2>
+<ul>
+<li>Americano <span class="price">3 ₼</span></li>
+<li>Kiçik Americano <span class="price">2.5 ₼</span></li>
+<li>Latte <span class="price">4 ₼</span></li>
+<li>Kiçik Latte <span class="price">3.5 ₼</span></li>
+<li>Cappuccino <span class="price">4 ₼</span></li>
+<li>Kiçik Cappuccino <span class="price">3.5 ₼</span></li>
+<li>Flat White <span class="price">4 ₼</span></li>
+<li>Espresso <span class="price">2 ₼</span></li>
+<li>Double Espresso <span class="price">3 ₼</span></li>
+<li>Raf <span class="price">4 ₼</span></li>
+<li>Raf Honey <span class="price">5 ₼</span></li>
+<li>Ice Latte <span class="price">4 ₼</span></li>
+<li>Ice Coffee <span class="price">3.5 ₼</span></li>
+<li>Hot Chocolate <span class="price">3.5 ₼</span></li>
+</ul>
+</div>
+
+<!-- ÇAYLAR -->
+<div class="card">
+<h2 onclick="toggle(this)">🍵 Çaylar <span>▼</span></h2>
+<ul>
+<li>Qara çay <span class="price">4 ₼</span></li>
+<li>Yaşıl çay <span class="price">4 ₼</span></li>
+<li>Çaytikanı çayı <span class="price">4 ₼</span></li>
+<li>Əlavə çay <span class="price">2 ₼</span></li>
+<li>Stəkan çay <span class="price">1 ₼</span></li>
+</ul>
+</div>
+
+<!-- PREMIUM ÇAY -->
+<div class="card">
+<h2 onclick="toggle(this)">🌿 Premium Çaylar <span>▼</span></h2>
+<ul>
+<li>Marakan çayı <span class="price">5 ₼</span></li>
+<li>Qış çayı <span class="price">5 ₼</span></li>
+<li>Meyvəli çay <span class="price">5 ₼</span></li>
+<li>Hibiskus <span class="price">5 ₼</span></li>
+<li>1001 gecə <span class="price">5 ₼</span></li>
+<li>Sakura <span class="price">5 ₼</span></li>
+<li>Kral çayı <span class="price">5 ₼</span></li>
+</ul>
+</div>
+
+<!-- SƏRİN SULAR -->
+<div class="card">
+<h2 onclick="toggle(this)">🥤 Sərin sular <span>▼</span></h2>
+<ul>
+<li>Coca-Cola / Fanta / Sprite <span class="price">2.5 ₼</span></li>
+<li>Red Bull <span class="price">5 ₼</span></li>
+<li>Tarxun / Düşes <span class="price">2 ₼</span></li>
+<li>İtburnu / Yemişan <span class="price">2 ₼</span></li>
+<li>Qazlı su <span class="price">2 ₼</span></li>
+<li>Qazsız su <span class="price">2 ₼</span></li>
+<li>Meyvə şirəsi <span class="price">3 ₼</span></li>
+</ul>
+</div>
+
+<!-- MÜRƏBBƏ -->
+<div class="card">
+<h2 onclick="toggle(this)">🍯 Mürəbbələr <span>▼</span></h2>
+<ul>
+<li>Çiyələk <span class="price">5 ₼</span></li>
+<li>Malina <span class="price">5 ₼</span></li>
+<li>Əncir <span class="price">5 ₼</span></li>
+<li>Zöğal <span class="price">5 ₼</span></li>
+<li>Qara gilas <span class="price">5 ₼</span></li>
+<li>Ağ gilas <span class="price">5 ₼</span></li>
+<li>Mandarin <span class="price">5 ₼</span></li>
+<li>Qoz <span class="price">5 ₼</span></li>
+</ul>
+</div>
+
+<!-- ÇƏRƏZLƏR -->
+<div class="card">
+<h2 onclick="toggle(this)">🧀 Çərəzlər <span>▼</span></h2>
+<ul>
+<li>Çips <span class="price">3 ₼</span></li>
+<li>Qızardılmış göbələk <span class="price">5 ₼</span></li>
+<li>Qızardılmış pendir <span class="price">3 ₼</span></li>
+<li>Saçaqlı pendir <span class="price">2 ₼</span></li>
+<li>Araxis <span class="price">2.5 ₼</span></li>
+<li>Fıstıq <span class="price">6 ₼</span></li>
+</ul>
+</div>
+
+<!-- FRESH -->
+<div class="card">
+<h2 onclick="toggle(this)">🍊 Fresh <span>▼</span></h2>
+<ul>
+<li>Portağal <span class="price">4 ₼</span></li>
+<li>Nar <span class="price">4 ₼</span></li>
+<li>Alma <span class="price">3 ₼</span></li>
+</ul>
+</div>
+
+<!-- ŞİRNİYYATLAR -->
+<div class="card">
+<h2 onclick="toggle(this)">🍰 Şirniyyatlar <span>▼</span></h2>
+<ul>
+<li>San Sebastian <span class="price">7 ₼</span></li>
+<li>Cheesecake NY <span class="price">6 ₼</span></li>
+<li>Tiramisu <span class="price">6 ₼</span></li>
+<li>Brownie <span class="price">5 ₼</span></li>
+<li>Red Velvet <span class="price">6 ₼</span></li>
+<li>Croissant (şokoladlı) <span class="price">4 ₼</span></li>
+</ul>
+</div>
+
+</div>
+
+<div class="footer">© SIEILIA Coffee</div>
+
+<script>
+function toggle(el){
+  el.parentElement.classList.toggle("open");
+}
+</script>
+
+</body>
+</html>
