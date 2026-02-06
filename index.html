@@ -44,10 +44,28 @@ body.light #moonIcon{display:none;}
 body.dark #moonIcon{display:block;}
 body.dark #sunIcon{display:none;}
 
-/* LOGO */
-.logo-wrap{position:relative;height:55px;}
-.logo{width:110px;height:110px;background:#fff;border-radius:50%;position:absolute;left:50%;top:-55px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.25);overflow:hidden;}
-.logo img{width:110%;height:110%;object-fit:cover;}
+.logo {
+    width:120px;
+    height:120px;
+    background:#fff;
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    top:45px;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+    overflow:hidden; /* Şəkilin daşmasını kəsir */
+}
+
+.logo img {
+    width:110%;
+    height:110%;
+    object-fit:cover; /* Şəkil div-i doldurur, kənarlara daşmır */
+}
+
 
 /* CONTENT */
 .content{text-align:center;padding:15px;}
