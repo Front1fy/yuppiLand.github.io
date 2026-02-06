@@ -11,7 +11,7 @@
 *{box-sizing:border-box;}
 body{margin:0;font-family:Arial,sans-serif;background:#f4fbff;color:#222;transition:.3s;}
 body.light{background:#f4fbff;color:#222;}
-body.dark{background:linear-gradient(135deg,#0a1a3b,#13264f,#1b3270);color:#fff;}
+body.dark{background:linear-gradient(135deg,#0a1a3b,#13264f,#1b3270,#1b3270);color:#fff;}
 
 /* HEADER */
 .header{background:#2fa4aa;height:120px;border-bottom-left-radius:60% 35px;border-bottom-right-radius:70% 35px;position:relative;}
@@ -46,8 +46,8 @@ body.dark #sunIcon{display:none;}
 
 /* LOGO */
 .logo-wrap{position:relative;height:55px;}
-.logo{width:110px;height:110px;background:#fff;border-radius:50%;position:absolute;left:50%;top:-55px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.25);}
-.logo img{width:80px;}
+.logo{width:110px;height:110px;background:#fff;border-radius:50%;position:absolute;left:50%;top:-55px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.25);overflow:hidden;}
+.logo img{width:110%;height:110%;object-fit:cover;}
 
 /* CONTENT */
 .content{text-align:center;padding:15px;}
@@ -58,7 +58,7 @@ h1 span{font-weight:700;}
 .rating-container{margin:35px 0 20px;}
 .rating{margin:10px 0;}
 .star{
-    font-size:50px; /* Ulduzların ölçüsü */
+    font-size:50px;
     color:#ffc107;
     cursor:pointer;
     transition:.3s;
@@ -153,6 +153,31 @@ body.dark .kids-info{
     background:rgba(255,200,50,0.2);
     color:#fff;
 }
+
+/* BAYRAQ BUTTON */
+.lang-btn{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    overflow:hidden;
+    cursor:pointer;
+    border:2px solid #fff;
+}
+.lang-btn img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.lang-text{
+    text-align:center;
+    margin-top:5px;
+    font-size:14px;
+    font-weight:bold;
+    display:none;
+}
 </style>
 </head>
 
@@ -162,9 +187,13 @@ body.dark .kids-info{
         <i class="fas fa-moon" id="moonIcon"></i>
         <i class="fas fa-sun" id="sunIcon"></i>
     </div>
+    <!-- Azərbaycan bayrağı -->
+    <div class="lang-btn" id="langBtn">
+        <img src="img/azerbaijan-flag.png" alt="AZ">
+    </div>
 </div>
 
-<div class="logo-wrap"><div class="logo"><img src="ımg/WhatsApp Image 2026-02-06 at 08.35.54 (1).jpeg" alt="YuppiLand"></div></div>
+<div class="logo-wrap"><div class="logo"><img src="img/logo.jpeg" alt="YuppiLand"></div></div>
 
 <div class="content">
 <h1><span>YuppiLand Əyləncə Mərkəzi</span></h1>
@@ -192,7 +221,6 @@ body.dark .kids-info{
     Hər gün: 10:00 – 23:00
 </div>
 
-<!-- Uşaqlar üçün məlumat bölməsi -->
 <div class="kids-info">
     <h2>🎉 Uşaqlar üçün Əyləncə Mərkəzi</h2>
     <p>YuppiLand-də uşaqlar üçün müxtəlif fəaliyyətlər mövcuddur:</p>
@@ -207,13 +235,13 @@ body.dark .kids-info{
 </div>
 
 <div class="footer">
-<div>Əlaqə: 0997767610</div>
 <div>Məkan — Binə atçılıq mərkəzinin yaxınlığı</div>
 <div class="social-buttons">
     <a href="https://www.tiktok.com/@yuppiland.az/photo/7568465433993448726?_r=1&_t=ZN-93gyoVgwJM6" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
     <a href="https://www.instagram.com/yuppiland.az?igsh=cWx6MnNnNjBwb2Qy&utm_source=qr" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/0997767610" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/994997767610" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
 </div>
+<div class="lang-text" id="langText"></div>
 </div>
 
 <script>
@@ -241,7 +269,7 @@ function drawStars(){
     for(let i=1;i<=5;i++){
         let s=document.createElement("span");
         s.innerText="★";
-        s.className="star active"; 
+        s.className="star active";
         s.onclick=()=>openReviewForm(i);
         starBox.appendChild(s);
     }
@@ -288,6 +316,13 @@ reviewForm.addEventListener("submit",function(e){
     reviewForm.reset();
     updateCount();
 });
+
+/* LANG BUTTON */
+const langBtn = document.getElementById("langBtn");
+const langText = document.getElementById("langText");
+langBtn.onclick = () => {
+    langText.style.display = langText.style.display==="block"?"none":"block";
+};
 </script>
 </body>
 </html>
