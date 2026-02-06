@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuppiland QR Menü</title>
+<style>
+:root{
+ --bg:#f0f7ff;
+ --card:#ffffff;
+ --text:#0f172a;
+ --accent:#2563eb;
+ --icon:#ffffff;
+}
+.dark{
+ --bg:#020617;
+ --card:#0f172a;
+ --text:#e5e7eb;
+ --accent:#38bdf8;
+ --icon:#ffffff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--card);position:sticky;top:0;z-index:100;gap:10px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{height:38px;border-radius:8px;}
+.search{flex:1;display:flex;justify-content:center;}
+.search input{width:100%;max-width:250px;padding:6px 12px;border-radius:20px;border:1px solid #ccc;font-size:14px;}
+.dark .search input{background:#0f172a;color:#e5e7eb;border:1px solid #555;}
+#darkBtn{border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;}
+#darkBtn img{width:24px;height:24px;}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:10px;}
+.filters button{border:none;background:var(--card);padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;}
+.filters button.active{background:var(--accent);color:#fff;}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px;}
+.card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.08);display:flex;flex-direction:column;}
+.card img{width:100%;height:110px;object-fit:cover;}
+.card .info{padding:8px;display:flex;flex-direction:column;gap:4px;}
+.card h3{margin:0;font-size:14px;}
+.card p{margin:0;font-size:12px;color:#555;}
+.price{font-weight:bold;font-size:13px;}
+.card button{border:none;background:var(--accent);color:#fff;padding:6px;border-radius:8px;cursor:pointer;font-size:13px;}
+.cart{position:fixed;bottom:18px;right:18px;background:var(--accent);color:#fff;padding:12px 18px;border-radius:30px;cursor:pointer;box-shadow:0 8px 25px rgba(0,0,0,.25);}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;}
+.modal-content{background:var(--card);width:90%;max-width:420px;border-radius:16px;padding:16px;}
+.item{display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">
+   <img src="assets/logo.png">
+   <strong>Yuppiland</strong>
+ </div>
+ <div class="search">
+   <input type="text" id="searchInput" placeholder="Axtar...">
+ </div>
+ <button id="darkBtn" onclick="toggleDark()">
+   <img id="darkIcon" src="/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png" alt="Ay/Gün">
+ </button>
+</header>
+
+<div class="filters">
+ <button class="active" onclick="filterMenu('all',this)">Hamısı</button>
+ <button onclick="filterMenu('salat',this)">Salat</button>
+ <button onclick="filterMenu('burger',this)">Burger & Sendviçlər</button>
+ <button onclick="filterMenu('pizza',this)">Pizza</button>
+ <button onclick="filterMenu('isti',this)">İsti Yeməklər</button>
+ <button onclick="filterMenu('lahmacun',this)">Lahmacun & Pide</button>
+ <button onclick="filterMenu('snack',this)">Qəlyanaltı</button>
+ <button onclick="filterMenu('desert',this)">Desertlər</button>
+ <button onclick="filterMenu('drinkHot',this)">İsti İçkilər</button>
+ <button onclick="filterMenu('drinkCold',this)">Soyuq İçkilər</button>
+ <button onclick="filterMenu('combo',this)">Kombo</button>
+ <button onclick="filterMenu('usaq',this)">Uşaq</button>
+ <button onclick="filterMenu('cay',this)">Çay Setləri</button>
+ <button onclick="filterMenu('sous',this)">Souslar</button>
+ <button onclick="filterMenu('banket',this)">Banket</button>
+</div>
+
+<div class="menu" id="menu"></div>
+
+<div class="cart" onclick="openCart()">🛒 (<span id="count">0</span>)</div>
+
+<div class="modal" id="modal">
+ <div class="modal-content">
+   <h3>Səbət</h3>
+   <div id="cartItems"></div>
+   <b>Cəm: <span id="total">0</span> AZN</b>
+   <br><br>
+   <a id="waBtn" target="_blank" style="display:block;background:#25D366;color:#fff;padding:12px;text-align:center;border-radius:10px;text-decoration:none;font-weight:bold">
+      WhatsApp ilə sifariş ver
+   </a>
+   <br>
+   <button onclick="closeCart()">Bağla</button>
+ </div>
+</div>
+
+<script>
+const phone="994997767610";
+const img="https://images.unsplash.com/400x300/?food";
+
+const products=[
+  // Salatlar
+  {n:"Çoban salatı",p:5,c:"salat",desc:"Pomidor, xiyar, soğan, göyərti, zeytun yağı"},
+  {n:"Sezar salatı (toyuq)",p:8,c:"salat",desc:"Toyuq, kahı, parmesan, sezar sous"},
+  {n:"Sezar salatı (krevetka)",p:12,c:"salat",desc:"Krevetka, kahı, parmesan, sezar sous"},
+  {n:"Turşulu pomidor salatı",p:5,c:"salat",desc:"Pomidor, turşu, göyərti"},
+
+  // Burger & Sendviçlər
+  {n:"Cheeseburger",p:8.5,c:"burger",desc:"Ət, pendir, xiyar, pomidor, sous"},
+  {n:"Chicken burger",p:6,c:"burger",desc:"Toyuq, salat, pomidor, sous"},
+  {n:"Club sandwich",p:7,c:"burger",desc:"Toyuq, salat, sous"},
+  {n:"Dana burger",p:8,c:"burger",desc:"Mal əti, pendir, sous"},
+  {n:"Sezar roll",p:5,c:"burger",desc:"Toyuq, kahı, sous"},
+  {n:"Yupp” burger",p:7,c:"burger",desc:"Ət, pendir, sous"},
+  {n:"Double burger (toyuq)",p:9,c:"burger",desc:"Toyuq, 2x pendir, sous"},
+  {n:"Double burger (ət)",p:11,c:"burger",desc:"Mal əti, 2x pendir, sous"},
+  {n:"Qapalı burger",p:8,c:"burger",desc:"Ət, pendir, kahı, sous"},
+
+  // Pizza (21 ədəd nümunə göstərildi, ölçü daxil)
+  {n:"Pizza BBQ",p:7,c:"pizza",desc:"22sm: 7 AZN, 28sm: 9 AZN, 32sm: 12 AZN"},
+  {n:"Pizza Margarita",p:5,c:"pizza",desc:"22sm:5 AZN, 28sm:6 AZN, 32sm:9 AZN"},
+  {n:"Pizza Pepperoni",p:6,c:"pizza",desc:"22sm:6 AZN, 28sm:7 AZN, 32sm:10 AZN"},
+  {n:"Pizza Soslu",p:6,c:"pizza",desc:"22sm:6 AZN, 28sm:8 AZN, 32sm:10 AZN"},
+  {n:"Pizza Sucuklu",p:6,c:"pizza",desc:"22sm:6 AZN, 28sm:8 AZN, 32sm:10 AZN"},
+  {n:"Pizza Toyuqlu",p:6,c:"pizza",desc:"22sm:6 AZN, 28sm:7 AZN, 32sm:9 AZN"},
+  {n:"Pizza Qarışıq",p:6,c:"pizza",desc:"22sm:6 AZN, 28sm:8 AZN, 32sm:11 AZN"},
+  // (digər pizza məhsulları burada əlavə ediləcək, toplam 21 pizza olmalı)
+
+  // İsti yeməklər
+  {n:"Toyuq langet",p:8,c:"isti",desc:"Toyuq ətindən hazırlanır"},
+  {n:"Küftə (toyuq)",p:7,c:"isti",desc:"Toyuq əti, ədviyyat"},
+  {n:"Küftə (mal əti)",p:9,c:"isti",desc:"Mal əti, ədviyyat"},
+
+  // Lahmacun & Pide
+  {n:"Sadə lahmacun",p:2.8,c:"lahmacun",desc:"Ət və ədviyyat"},
+  {n:"Pendirlə lahmacun",p:3.6,c:"lahmacun",desc:"Pendir, ədviyyat"},
+  {n:"Mix lahmacun",p:4,c:"lahmacun",desc:"Ət + pendir"},
+  {n:"Pendirlə pide",p:6,c:"lahmacun",desc:"Pendir, ədviyyat"},
+  {n:"Mix pide",p:8,c:"lahmacun",desc:"Ət + pendir"},
+  {n:"Qıyməli pide",p:7.5,c:"lahmacun",desc:"Ət, ədviyyat"},
+  {n:"Sucuklu pide",p:7.5,c:"lahmacun",desc:"Sucuk, ədviyyat"},
+  {n:"Toyuqlu pide",p:7,c:"lahmacun",desc:"Toyuq, ədviyyat"},
+
+  // Qəlyanaltılar
+  {n:"BBQ qanadları",p:6,c:"snack",desc:"Toyuq qanadları, sous"},
+  {n:"Toyuq budları",p:6,c:"snack",desc:"Toyuq budları, sous"},
+  {n:"Kartof fri kiçik",p:2,c:"snack",desc:"Kiçik porsiya"},
+  {n:"Kartof fri böyük",p:3,c:"snack",desc:"Böyük porsiya"},
+  {n:"Nuggets",p:3.5,c:"snack",desc:"Toyuq nuggets"},
+  {n:"Toyuq topları",p:2.5,c:"snack",desc:"Toyuq, ədviyyat"},
+  {n:"Pendir çubuqları",p:5,c:"snack",desc:"Pendir çubuqları"},
+  {n:"Pendir topları",p:3,c:"snack",desc:"Pendir topları"},
+  {n:"Tost (pendirli)",p:3,c:"snack",desc:"Pendirli tost"},
+  {n:"Tost (sucuklu)",p:4,c:"snack",desc:"Sucuklu tost"},
+  {n:"Corndog",p:3,c:"snack",desc:"Hot dog xəmirdə"},
+
+  // Desertlər
+  {n:"Dondurma",p:2.5,c:"desert",desc:"Müxtəlif ləzzətlər"},
+  {n:"Kruasan şokoladlı",p:1,c:"desert",desc:"Şokoladlı kruasan"},
+  {n:"Paxlava",p:3,c:"desert",desc:"Türk paxlavası"},
+  {n:"Mürəbbə çeşidlər",p:5,c:"desert",desc:"Qarpız, ağ gilas, snickers, çiyələk"},
+  {n:"Künəfə (dondurma)",p:5,c:"desert",desc:"Künəfə + dondurma"},
+  {n:"Künəfə qaymaq",p:5,c:"desert",desc:"Künəfə + qaymaq"},
+  {n:"Baby şokolad",p:0.6,c:"desert",desc:"Kiçik şokolad"},
+  {n:"Plitka şokolad",p:3,c:"desert",desc:"Şokolad plitkası"},
+
+  // İsti içkilər (8 ədəd)
+  {n:"Meyvəli çay",p:1,c:"drinkHot",desc:"Fincan 1 AZN, Çaynik 4 AZN"},
+  {n:"Qara çay",p:1,c:"drinkHot",desc:"Fincan 1 AZN, Çaynik 3 AZN"},
+  {n:"Yaşıl çay",p:1,c:"drinkHot",desc:"Fincan 1 AZN, Çaynik 3 AZN"},
+  {n:"Cappuccino",p:2,c:"drinkHot",desc:"Espresso + süd"},
+  {n:"Americano",p:2,c:"drinkHot",desc:"Espresso"},
+  {n:"Latte",p:2,c:"drinkHot",desc:"Espresso + süd"},
+  {n:"Yupp Coffee",p:3,c:"drinkHot",desc:"Espresso, süd, köpük"},
+  {n:"İsti şokolad",p:2,c:"drinkHot",desc:"Şokolad + süd"},
+
+  // Soyuq içkilər (10 ədəd)
+  {n:"Meyvə şirəsi 200ml",p:1,c:"drinkCold",desc:"Meyvə şirəsi"},
+  {n:"Cola/Fanta/Sprite 330ml",p:2.5,c:"drinkCold",desc:"Qazlı içkilər"},
+  {n:"Fusetea Limon 330ml",p:2.5,c:"drinkCold",desc:"Limonlu çay"},
+  {n:"Fusetea Mango 330ml",p:2.5,c:"drinkCold",desc:"Mango çayı"},
+  {n:"Fusetea Şaftalı 330ml",p:2.5,c:"drinkCold",desc:"Şaftalı çayı"},
+  {n:"Meyvə şirəsi 330ml",p:2,c:"drinkCold",desc:"Meyvə şirəsi"},
+  {n:"Ayran",p:1,c:"drinkCold",desc:"Ayran"},
+  {n:"Sırab qazsız 0.5ml",p:0.6,c:"drinkCold",desc:"Qazsız mineral su"},
+  {n:"Sırab premium",p:2,c:"drinkCold",desc:"Qazlı/qazsız mineral su"},
+  {n:"Cola/Fanta/Sprite (stək.)",p:1,c:"drinkCold",desc:"Stəkan içkilər"},
+
+  // Souslar
+  {n:"Barbekyu",p:1,c:"sous",desc:"Ət üçün sous"},
+  {n:"Ketçup",p:0.5,c:"sous",desc:"Pomidor sousu"},
+  {n:"Mayonez",p:0.5,c:"sous",desc:"Sarı mayonez"},
+  {n:"Şirin çili",p:1,c:"sous",desc:"Acı-şirin sous"},
+  {n:"Yupp sous",p:1,c:"sous",desc:"Xüsusi sous"},
+  {n:"Pendir sous",p:1,c:"sous",desc:"Pendir sousu"},
+
+  // Banket
+  {n:"Sac (toyuq əti)",p:20,c:"banket",desc:"Toyuq + tərəvəz + ədviyyat"},
+  {n:"Sac (mal əti)",p:25,c:"banket",desc:"Mal əti + tərəvəz + ədviyyat"},
+  {n:"Kabab (quzu)",p:10,c:"banket",desc:"Quzu kababı"},
+  {n:"Kabab (lülə)",p:9,c:"banket",desc:"Lülə kababı"},
+  {n:"Kabab (toyuq)",p:8,c:"banket",desc:"Toyuq kababı"},
+  {n:"Toyuq tabaka",p:16,c:"banket",desc:"Toyuq + tərəvəz + sous"},
+
+  // Kombo menyular (nə daxil olduğu göstərilir)
+  {n:"COMBO BURGER (2 nəfərlik)",p:16,c:"combo",desc:"Chicken Burger 1, Dana Burger 1, Cola 330ml 2, Kartof fri 1, Ketçup 1, Mayonez 1"},
+  {n:"KOMBO PİZZA (2 nəfərlik)",p:13,c:"combo",desc:"Yupp Pizza 26sm 1, Cola 330ml 2, Fr 2, Ketçup 1, Mayonez 1"},
+  {n:"COMBO BURGER (4 nəfərlik)",p:33,c:"combo",desc:"Chicken Burger 2, Dana Burger 2, Cola 330ml 4, Kartof fri 2, Ketçup 1, Mayonez 1"},
+  {n:"KOMBO PİZZA (4 nəfərlik)",p:24,c:"combo",desc:"Yupp Pizza 32sm, Fr 2, Nuggets 2, Cola 330ml 4, Ketçup 1, Mayonez 1"},
+  {n:"UŞAQ MENYUSU 1",p:6,c:"usaq",desc:"Fr 1, Nuggets 1, Meyvə şirəsi 200ml 1, Ketçup, Mayonez"},
+  {n:"UŞAQ MENYUSU 2",p:15,c:"usaq",desc:"Yupp Pizza 26sm, Fr 1, Nuggets 1, Meyvə şirəsi 200ml 4, Mayonez, Ketçup"},
+  {n:"Ailə Menyusu",p:42,c:"usaq",desc:"Yupp Pizza qarışıq 32sm 2, Lahmacun sadə 2, Fr 2, Nuggets 2, Cola 4, Ketçup 1, Mayonez 1"},
+  {n:"MEGA Ailə Kombo",p:50,c:"usaq",desc:"Yupp Pizza qarışıq 32sm 1, Pizza Toyuqlu 32sm 1, Pide Qıyməli 1, Sezar salat (toyuqlu) 1, Fr 2, Nuggets 2, Cola 4, Ketçup 1, Mayonez 1"},
+
+  // Çay setləri
+  {n:"Yuppiland Çay Seti – 3 nəfərlik",p:9,c:"cay",desc:"1 çaynik çay, Paxlava, Mürəbbə çeşid"},
+  {n:"Yuppiland Çay Seti – 7 AZN",p:7,c:"cay",desc:"1 çaynik çay, Kruasan, Mürəbbə çeşid"},
+  {n:"Yuppiland Çay Seti – 10 AZN",p:10,c:"cay",desc:"1 çaynik çay, Künəfə, Mürəbbə çeşid"},
+  {n:"Yuppiland Ailə Çay Seti – 15 AZN",p:15,c:"cay",desc:"2 çaynik çay, Türk paxlavası, Mürəbbə çeşid, Künəfə menyu"}
+];
+
+let cart=[];
+
+function render(list){
+  const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  menu.innerHTML="";
+  list.forEach(p=>{
+    if(p.n.toLowerCase().includes(searchTerm)){
+      menu.innerHTML+=`
+      <div class="card">
+        <img src="${img}">
+        <div class="info">
+          <h3>${p.n}</h3>
+          <p>${p.desc}</p>
+          <div class="price">${p.p} AZN</div>
+          <button onclick='addItem(${JSON.stringify(p)})'>Əlavə et</button>
+        </div>
+      </div>`;
+    }
+  });
+}
+
+function filterMenu(cat,btn){
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  render(cat==="all"?products:products.filter(p=>p.c===cat));
+}
+
+function addItem(p){
+  cart.push(p);
+  document.getElementById("count").innerText=cart.length;
+}
+
+function openCart(){
+  let html="",total=0,text="🛒 Yeni sifariş%0A%0A";
+  cart.forEach(i=>{
+    html+=`<div class="item"><span>${i.n}</span><span>${i.p} AZN</span></div>`;
+    total+=i.p;
+    text+=`• ${i.n} - ${i.p} AZN%0A`;
+  });
+  text+=`%0ACəm: ${total} AZN`;
+  document.getElementById("cartItems").innerHTML=html||"Boşdur";
+  document.getElementById("total").innerText=total;
+  waBtn.href=`https://wa.me/${phone}?text=${text}`;
+  document.getElementById("modal").style.display="flex";
+}
+
+function closeCart(){document.getElementById("modal").style.display="none";}
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+  const icon = document.getElementById("darkIcon");
+  if(document.body.classList.contains("dark")){
+      icon.src = "/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png"; 
+  }else{
+      icon.src = "/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png"; 
+  }
+}
+
+document.getElementById("searchInput").addEventListener("input",()=>render(products));
+
+render(products);
+</script>
+
+</body>
+</html>
