@@ -58,7 +58,7 @@ h1 span{font-weight:700;}
 .rating-container{margin:35px 0 20px;}
 .rating{margin:10px 0;}
 .star{
-    font-size:50px; /* Ulduzların ölçüsünü böyütdük */
+    font-size:50px; /* Ulduzların ölçüsü */
     color:#ffc107;
     cursor:pointer;
     transition:.3s;
@@ -207,11 +207,11 @@ body.dark .kids-info{
 </div>
 
 <div class="footer">
-<div>Əlaqə: xxxxxxx</div>
+<div>Əlaqə: 0997767610</div>
 <div>Məkan — Binə atçılıq mərkəzinin yaxınlığı</div>
 <div class="social-buttons">
-    <a href="https://https://vm.tiktok.com/ZNRUA1Lcy/" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
-    <a href="https://https://www.instagram.com/yuppiland.az?igsh=cWx6MnNnNjBwb2Qy&utm_source=qr" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@yuppiland.az/photo/7568465433993448726?_r=1&_t=ZN-93gyoVgwJM6" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/yuppiland.az?igsh=cWx6MnNnNjBwb2Qy&utm_source=qr" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
     <a href="https://wa.me/0997767610" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
 </div>
 </div>
@@ -241,7 +241,7 @@ function drawStars(){
     for(let i=1;i<=5;i++){
         let s=document.createElement("span");
         s.innerText="★";
-        s.className="star active"; // həmişə sarı
+        s.className="star active"; 
         s.onclick=()=>openReviewForm(i);
         starBox.appendChild(s);
     }
@@ -274,14 +274,12 @@ reviewForm.addEventListener("submit",function(e){
     const star = parseInt(ulduzInput.value);
     if(!name || !comment) return;
 
-    // Formspree göndər
     fetch("https://formspree.io/f/xlgwrvrv",{
         method:"POST",
         body: new FormData(reviewForm),
         headers: {"Accept": "application/json"}
     });
 
-    // Rey localStorage-da saxla
     reviews.push(star);
     localStorage.setItem("reviews", JSON.stringify(reviews));
 
