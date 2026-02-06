@@ -57,15 +57,14 @@ body.dark #sunIcon{display:none;}
     align-items:center;
     justify-content:center;
     box-shadow:0 10px 25px rgba(0,0,0,.25);
-    overflow:hidden; /* Şəkilin daşmasını kəsir */
+    overflow:hidden;
 }
 
 .logo img {
     width:110%;
     height:110%;
-    object-fit:cover; /* Şəkil div-i doldurur, kənarlara daşmır */
+    object-fit:cover;
 }
-
 
 /* CONTENT */
 .content{text-align:center;padding:15px;}
@@ -211,7 +210,11 @@ body.dark .kids-info{
     </div>
 </div>
 
-<div class="logo-wrap"><div class="logo"><img src="ımg/WhatsApp Image 2026-02-06 at 08.35.54 (1).jpeg" alt="YuppiLand"></div></div>
+<div class="logo-wrap">
+    <div class="logo">
+        <img src="ımg/WhatsApp Image 2026-02-06 at 08.35.54 (1).jpeg" alt="YuppiLand">
+    </div>
+</div>
 
 <div class="content">
 <h1><span>YuppiLand Əyləncə Mərkəzi</span></h1>
@@ -232,7 +235,10 @@ body.dark .kids-info{
     <div id="message"></div>
 </div>
 
-<div class="menu-card" onclick="alert('Menyu buraya bağlanacaq')"><span>📖 Menyuya baxın</span><span>›</span></div>
+<!-- MENYUYA KEÇİD -->
+<div class="menu-card" onclick="window.location.href='index(1).html'">
+    <span>📖 Menyuya baxın</span><span>›</span>
+</div>
 
 <div class="opening-hours">
     <strong>Açılış Saatları:</strong><br>
