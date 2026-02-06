@@ -1,290 +1,247 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SIELLIA Coffee | QR Menu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YuppiLand</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-:root{
-  --orange:#ff8c00;
-  --glass:rgba(255,255,255,.08);
+*{box-sizing:border-box;}
+body{margin:0;font-family:Arial,sans-serif;background:#f4fbff;color:#222;transition:.3s;}
+body.light{background:#f4fbff;color:#222;}
+body.dark{background:linear-gradient(135deg,#0a1a3b,#13264f,#1b3270);color:#fff;}
+
+/* HEADER */
+.header{background:#2fa4aa;height:120px;border-bottom-left-radius:60% 35px;border-bottom-right-radius:70% 35px;position:relative;}
+
+/* THEME TOGGLE */
+.theme-toggle{
+    position:absolute;
+    top:14px;
+    left:14px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:rgba(255,255,255,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:.3s;
 }
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:radial-gradient(circle at top,#1a1a1a,#000);
-  color:#fff;
+.theme-toggle i{
+    color:#fff;
+    font-size:18px;
+    transition:.3s;
+    position:absolute;
 }
+#moonIcon{display:none;}
+#sunIcon{display:none;}
+body.light #sunIcon{display:block;}
+body.light #moonIcon{display:none;}
+body.dark #moonIcon{display:block;}
+body.dark #sunIcon{display:none;}
 
-/* ===== NEON HEADER (ikonlar silindi, mərkəzə fokus) ===== */
-.neon-header-new{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#000000;
-  padding:30px 0;
-  box-shadow:0 0 25px #FF8C00;
+/* LOGO */
+.logo-wrap{position:relative;height:55px;}
+.logo{width:110px;height:110px;background:#fff;border-radius:50%;position:absolute;left:50%;top:-55px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.25);}
+.logo img{width:80px;}
+
+/* CONTENT */
+.content{text-align:center;padding:15px;}
+h1{font-size:22px;margin-bottom:8px;color:inherit;}
+h1 span{font-weight:700;}
+
+/* RATING */
+.rating-container{margin:35px 0 20px;}
+.rating{margin:10px 0;}
+.star{font-size:32px;color:#ffc107;cursor:pointer;transition:.3s;text-shadow:0 0 5px #ffc107,0 0 10px #ffc107,0 0 15px #ffc107;}
+.star:hover{color:#ffd700;text-shadow:0 0 5px #ffd700,0 0 10px #ffd700,0 0 15px #ffd700;}
+#ratingText{font-size:14px;color:inherit;margin:2px 0;}
+
+/* REVIEW BOX */
+.review-box{
+    display:none;
+    opacity:0;
+    transform:translateY(-20px);
+    transition:.4s ease;
+    margin-top:20px;
+    background:rgba(255,255,255,0.95);
+    padding:20px;
+    max-width:360px;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius:15px;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+    color:#000;
 }
-
-.logo-text {
-  text-align:center;
+.review-box.show{
+    display:block;
+    opacity:1;
+    transform:translateY(0);
 }
-
-/* SIELLIA yazısı arıza effekti ilə */
-.sielia-new {
-  font-family:'Arial Black', Arial, sans-serif;
-  font-size:56px;
-  font-weight:900;
-  letter-spacing:5px;
-  color:#fff;
-  text-shadow:
-    0 0 8px #fff,
-    0 0 20px #fff,
-    0 0 30px #FF8C00,
-    0 0 40px #FF8C00,
-    0 0 70px #FF8C00;
-  animation:glitch-sielia 2.5s infinite;
+body.dark .review-box{background:rgba(30,30,30,0.95); color:#fff;}
+.review-box input, .review-box textarea{
+    width:100%; margin:10px 0; padding:12px; border-radius:10px; border:1px solid #ccc;
 }
-
-/* Coffee yazısı arıza effekti ilə */
-.coffee-new {
-  margin-top:4px;
-  font-family:'Arial',sans-serif;
-  font-weight:700;
-  font-size:36px;
-  color:white;
-  background:linear-gradient(90deg,#FF8C00,#FFB347);
-  padding:6px 20px;
-  border-radius:8px;
-  box-shadow:
-    0 0 20px #FF8C00,
-    inset 0 0 12px #FF8C00;
-  animation:glitch-coffee 2.5s infinite;
-  user-select:none;
+body.dark .review-box input, body.dark .review-box textarea{border:1px solid #555; background:#1e1e1e; color:#fff;}
+.review-box button{
+    width:100%; padding:12px; border:none; border-radius:10px; background:#2fa4aa; color:#fff; font-weight:bold; cursor:pointer; transition:.3s;
 }
+.review-box button:hover{background:#1d7c80;}
+#closeReview{cursor:pointer; font-weight:bold; font-size:18px; float:right; margin-bottom:10px;}
 
-/* ===== NEON ARIZA ANIMASİYALARI ===== */
-@keyframes glitch-sielia {
-  0%,20%,100%{text-shadow:0 0 8px #fff,0 0 20px #fff,0 0 30px #FF8C00,0 0 40px #FF8C00,0 0 70px #FF8C00; opacity:1; transform:translate(0,0);}
-  10%{text-shadow:0 0 4px #fff,0 0 12px #fff,0 0 15px #FF8C00,0 0 20px #FF8C00,0 0 40px #FF8C00; opacity:0.7; transform:translate(-2px,2px);}
-  30%{text-shadow:0 0 6px #fff,0 0 18px #fff,0 0 25px #FF8C00,0 0 30px #FF8C00,0 0 60px #FF8C00; opacity:1; transform:translate(2px,-1px);}
-  50%{text-shadow:0 0 2px #fff,0 0 10px #fff,0 0 20px #FF8C00,0 0 25px #FF8C00,0 0 50px #FF8C00; opacity:0.5; transform:translate(-1px,2px);}
-  70%{text-shadow:0 0 4px #fff,0 0 12px #fff,0 0 18px #FF8C00,0 0 22px #FF8C00,0 0 45px #FF8C00; opacity:0.6; transform:translate(2px,1px);}
+/* MENU */
+.menu-card{background:#2fa4aa;color:#fff;max-width:360px;margin:20px auto;padding:18px;border-radius:12px;display:flex;justify-content:space-between;cursor:pointer;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* AÇILIŞ SAATLARI KONTEYNERİ */
+.opening-hours{
+    max-width:360px;
+    margin:15px auto;
+    padding:15px;
+    background:rgba(47,164,170,0.1);
+    border-radius:12px;
+    font-size:15px;
+    color:#222;
 }
+body.dark .opening-hours{background:rgba(47,164,170,0.2); color:#fff;}
 
-@keyframes glitch-coffee {
-  0%,20%,100%{text-shadow:0 0 15px #FF8C00, inset 0 0 10px #FF8C00; opacity:1; transform:translate(0,0);}
-  10%{text-shadow:0 0 8px #FF8C00, inset 0 0 5px #FF8C00; opacity:0.6; transform:translate(1px,-1px);}
-  30%{text-shadow:0 0 12px #FF8C00, inset 0 0 8px #FF8C00; opacity:1; transform:translate(-1px,1px);}
-  50%{text-shadow:0 0 10px #FF8C00, inset 0 0 5px #FF8C00; opacity:0.5; transform:translate(2px,0);}
-  70%{text-shadow:0 0 8px #FF8C00, inset 0 0 4px #FF8C00; opacity:0.7; transform:translate(-1px,-1px);}
-}
+/* FOOTER */
+.footer{margin-top:15px;font-size:14px;color:inherit;text-align:center;}
+#message{margin-top:10px;font-weight:bold;color:#4caf50;}
 
-/* ===== MENU ===== */
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:15px;
-}
-
-.card{
-  background:var(--glass);
-  backdrop-filter:blur(10px);
-  border-radius:18px;
-  margin-bottom:18px;
-  overflow:hidden;
-  box-shadow:0 0 30px rgba(0,0,0,.6);
-}
-
-.card h2{
-  margin:0;
-  padding:16px 20px;
-  background:linear-gradient(90deg,var(--orange),#ffb347);
-  color:#000;
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  user-select:none;
-}
-
-.card ul{
-  list-style:none;
-  margin:0;
-  padding:15px 20px;
-  display:none;
-  animation:fade .4s ease;
-}
-.card.open ul{display:block}
-
-.card li{
-  display:flex;
-  justify-content:space-between;
-  padding:7px 0;
-  border-bottom:1px dashed rgba(255,255,255,.2);
-}
-
-.price{color:var(--orange);font-weight:bold}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(-10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.footer{
-  text-align:center;
-  padding:25px;
-  color:#aaa;
-  font-size:0.9rem;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sielia-new{font-size:42px}
-  .coffee-new{font-size:28px}
-  .neon-header-new{padding:20px 0;}
-}
+/* Sosial düymələr */
+.social-buttons{display:flex;justify-content:center;gap:20px;margin-top:10px;}
+.social-btn{font-size:28px;color:#2fa4aa;text-decoration:none;transition:.3s;}
+.social-btn:hover{color:#1d7c80;}
+body.dark .social-btn{color:#fff;}
+body.dark .social-btn:hover{color:#ffd54f;}
 </style>
 </head>
 
 <body>
-
-<!-- NEON HEADER (ikonlar silindi) -->
-<div class="neon-header-new">
-  <div class="logo-text">
-    <div class="sielia-new">SIEILIA</div>
-    <div class="coffee-new">Coffee</div>
-  </div>
+<div class="header">
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon" id="moonIcon"></i>
+        <i class="fas fa-sun" id="sunIcon"></i>
+    </div>
 </div>
 
-<!-- MENYU KONTEYNER -->
-<div class="container">
+<div class="logo-wrap"><div class="logo"><img src="logo.png" alt="YuppiLand"></div></div>
 
-<!-- COFFEE -->
-<div class="card open">
-<h2 onclick="toggle(this)">☕ Coffee <span>▼</span></h2>
-<ul>
-<li>Americano <span class="price">3 ₼</span></li>
-<li>Kiçik Americano <span class="price">2.5 ₼</span></li>
-<li>Latte <span class="price">4 ₼</span></li>
-<li>Kiçik Latte <span class="price">3.5 ₼</span></li>
-<li>Cappuccino <span class="price">4 ₼</span></li>
-<li>Kiçik Cappuccino <span class="price">3.5 ₼</span></li>
-<li>Flat White <span class="price">4 ₼</span></li>
-<li>Espresso <span class="price">2 ₼</span></li>
-<li>Double Espresso <span class="price">3 ₼</span></li>
-<li>Raf <span class="price">4 ₼</span></li>
-<li>Raf Honey <span class="price">5 ₼</span></li>
-<li>Ice Latte <span class="price">4 ₼</span></li>
-<li>Ice Coffee <span class="price">3.5 ₼</span></li>
-<li>Hot Chocolate <span class="price">3.5 ₼</span></li>
-</ul>
+<div class="content">
+<h1><span>YuppiLand Əyləncə Mərkəzi</span></h1>
+
+<div class="rating-container">
+    <div class="rating" id="stars"></div>
+    <div id="ratingText">Ortalama: 4.8 ⭐ (Rəy sayı: 280)</div>
+
+    <div class="review-box" id="reviewBox">
+        <span id="closeReview">✖</span>
+        <form id="reviewForm">
+            <input type="text" id="nameInput" name="name" placeholder="Adınız" required>
+            <textarea id="commentInput" name="comment" placeholder="Rəyinizi yazın..." required></textarea>
+            <input type="hidden" id="ulduzInput" name="ulduz">
+            <button type="submit">Göndər</button>
+        </form>
+    </div>
+    <div id="message"></div>
 </div>
 
-<!-- ÇAYLAR -->
-<div class="card">
-<h2 onclick="toggle(this)">🍵 Çaylar <span>▼</span></h2>
-<ul>
-<li>Qara çay <span class="price">4 ₼</span></li>
-<li>Yaşıl çay <span class="price">4 ₼</span></li>
-<li>Çaytikanı çayı <span class="price">4 ₼</span></li>
-<li>Əlavə çay <span class="price">2 ₼</span></li>
-<li>Stəkan çay <span class="price">1 ₼</span></li>
-</ul>
+<div class="menu-card" onclick="alert('Menyu buraya bağlanacaq')"><span>📖 Menyuya baxın</span><span>›</span></div>
+
+<div class="opening-hours">
+    <strong>Açılış Saatları:</strong><br>
+    Hər gün: 10:00 – 23:00
 </div>
 
-<!-- PREMIUM ÇAY -->
-<div class="card">
-<h2 onclick="toggle(this)">🌿 Premium Çaylar <span>▼</span></h2>
-<ul>
-<li>Marakan çayı <span class="price">5 ₼</span></li>
-<li>Qış çayı <span class="price">5 ₼</span></li>
-<li>Meyvəli çay <span class="price">5 ₼</span></li>
-<li>Hibiskus <span class="price">5 ₼</span></li>
-<li>1001 gecə <span class="price">5 ₼</span></li>
-<li>Sakura <span class="price">5 ₼</span></li>
-<li>Kral çayı <span class="price">5 ₼</span></li>
-</ul>
+<div class="footer">
+<div>Əlaqə: xxxxxxx</div>
+<div>Məkan — Binə atçılıq mərkəzinin yaxınlığı</div>
+<div class="social-buttons">
+    <a href="https://www.tiktok.com/" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.instagram.com/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/xxxxxxx" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
 </div>
-
-<!-- SƏRİN SULAR -->
-<div class="card">
-<h2 onclick="toggle(this)">🥤 Sərin sular <span>▼</span></h2>
-<ul>
-<li>Coca-Cola / Fanta / Sprite <span class="price">2.5 ₼</span></li>
-<li>Red Bull <span class="price">5 ₼</span></li>
-<li>Tarxun / Düşes <span class="price">2 ₼</span></li>
-<li>İtburnu / Yemişan <span class="price">2 ₼</span></li>
-<li>Qazlı su <span class="price">2 ₼</span></li>
-<li>Qazsız su <span class="price">2 ₼</span></li>
-<li>Meyvə şirəsi <span class="price">3 ₼</span></li>
-</ul>
 </div>
-
-<!-- MÜRƏBBƏ -->
-<div class="card">
-<h2 onclick="toggle(this)">🍯 Mürəbbələr <span>▼</span></h2>
-<ul>
-<li>Çiyələk <span class="price">5 ₼</span></li>
-<li>Malina <span class="price">5 ₼</span></li>
-<li>Əncir <span class="price">5 ₼</span></li>
-<li>Zöğal <span class="price">5 ₼</span></li>
-<li>Qara gilas <span class="price">5 ₼</span></li>
-<li>Ağ gilas <span class="price">5 ₼</span></li>
-<li>Mandarin <span class="price">5 ₼</span></li>
-<li>Qoz <span class="price">5 ₼</span></li>
-</ul>
-</div>
-
-<!-- ÇƏRƏZLƏR -->
-<div class="card">
-<h2 onclick="toggle(this)">🧀 Çərəzlər <span>▼</span></h2>
-<ul>
-<li>Çips <span class="price">3 ₼</span></li>
-<li>Qızardılmış göbələk <span class="price">5 ₼</span></li>
-<li>Qızardılmış pendir <span class="price">3 ₼</span></li>
-<li>Saçaqlı pendir <span class="price">2 ₼</span></li>
-<li>Araxis <span class="price">2.5 ₼</span></li>
-<li>Fıstıq <span class="price">6 ₼</span></li>
-</ul>
-</div>
-
-<!-- FRESH -->
-<div class="card">
-<h2 onclick="toggle(this)">🍊 Fresh <span>▼</span></h2>
-<ul>
-<li>Portağal <span class="price">4 ₼</span></li>
-<li>Nar <span class="price">4 ₼</span></li>
-<li>Alma <span class="price">3 ₼</span></li>
-</ul>
-</div>
-
-<!-- ŞİRNİYYATLAR -->
-<div class="card">
-<h2 onclick="toggle(this)">🍰 Şirniyyatlar <span>▼</span></h2>
-<ul>
-<li>San Sebastian <span class="price">7 ₼</span></li>
-<li>Cheesecake NY <span class="price">6 ₼</span></li>
-<li>Tiramisu <span class="price">6 ₼</span></li>
-<li>Brownie <span class="price">5 ₼</span></li>
-<li>Red Velvet <span class="price">6 ₼</span></li>
-<li>Croissant (şokoladlı) <span class="price">4 ₼</span></li>
-</ul>
-</div>
-
-</div>
-
-<div class="footer">© SIEILIA Coffee</div>
 
 <script>
-function toggle(el){
-  el.parentElement.classList.toggle("open");
-}
-</script>
+/* THEME TOGGLE */
+const toggle = document.getElementById("themeToggle");
+const body = document.body;
+if(localStorage.getItem("theme")==="dark"){body.classList.add("dark");body.classList.remove("light");}else{body.classList.add("light");body.classList.remove("dark");}
+toggle.onclick = () => {body.classList.toggle("dark");body.classList.toggle("light");localStorage.setItem("theme",body.classList.contains("dark")?"dark":"light");};
 
+/* LOCAL STORAGE REY */
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+let count = 280;
+const starBox=document.getElementById("stars");
+const ratingText=document.getElementById("ratingText");
+const reviewBox=document.getElementById("reviewBox");
+const ulduzInput=document.getElementById("ulduzInput");
+const reviewForm=document.getElementById("reviewForm");
+const message=document.getElementById("message");
+const closeReview=document.getElementById("closeReview");
+let selected=0;
+
+/* Draw stars */
+function drawStars(){
+    starBox.innerHTML="";
+    for(let i=1;i<=5;i++){
+        let s=document.createElement("span");
+        s.innerText="★";
+        s.className="star active"; // həmişə sarı
+        s.onclick=()=>openReviewForm(i);
+        starBox.appendChild(s);
+    }
+}
+drawStars();
+
+/* Update rey sayı */
+function updateCount(){
+    ratingText.innerText="Ortalama: 4.8 ⭐ (Rəy sayı: "+(count+reviews.length)+")";
+}
+updateCount();
+
+/* Open form */
+function openReviewForm(val){
+    selected=val;
+    ulduzInput.value=val;
+    reviewBox.classList.add("show");
+}
+
+/* Close form */
+closeReview.onclick = () => {
+    reviewBox.classList.remove("show");
+};
+
+/* Form submit */
+reviewForm.addEventListener("submit",function(e){
+    e.preventDefault();
+    const name = document.getElementById("nameInput").value.trim();
+    const comment = document.getElementById("commentInput").value.trim();
+    const star = parseInt(ulduzInput.value);
+    if(!name || !comment) return;
+
+    // Formspree göndər
+    fetch("https://formspree.io/f/xlgwrvrv",{
+        method:"POST",
+        body: new FormData(reviewForm),
+        headers: {"Accept": "application/json"}
+    });
+
+    // Rey localStorage-da saxla
+    reviews.push(star);
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+
+    message.innerText="Rəyiniz üçün təşəkkür edirik 💙";
+    reviewBox.classList.remove("show");
+    reviewForm.reset();
+    updateCount();
+});
+</script>
 </body>
 </html>
