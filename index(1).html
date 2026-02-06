@@ -23,7 +23,7 @@
 body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--card);position:sticky;top:0;z-index:100;gap:10px;}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo img{height:38px;border-radius:50px;}
+.logo img{height:38px;border-radius:8px;}
 .search{flex:1;display:flex;justify-content:center;}
 .search input{width:100%;max-width:250px;padding:6px 12px;border-radius:20px;border:1px solid #ccc;font-size:14px;}
 .dark .search input{background:#0f172a;color:#e5e7eb;border:1px solid #555;}
@@ -50,14 +50,14 @@ header{display:flex;justify-content:space-between;align-items:center;padding:12p
 
 <header>
  <div class="logo">
-   <img src="ımg/WhatsApp Image 2026-02-06 at 08.35.54 (1).jpeg">
+   <img src="assets/logo.png">
    <strong>Yuppiland</strong>
  </div>
  <div class="search">
    <input type="text" id="searchInput" placeholder="Axtar...">
  </div>
  <button id="darkBtn" onclick="toggleDark()">
-   <img id="darkIcon" src="/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png" alt="Ay/Gün">
+   <img id="darkIcon" src="assets/moon.png" alt="Ay/Gün">
  </button>
 </header>
 
@@ -99,10 +99,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:12p
 
 <script>
 const phone="994997767610";
-const img="https://images.unsplash.com/400x300/?food";
 
-const products=[
-  // Salatlar
+const products=[ // Salatlar
   {n:"Çoban salatı",p:5,c:"salat",desc:"Pomidor, xiyar, soğan, göyərti, zeytun yağı",img:"ımg/WhatsApp Image 2026-02-06 at 08.35.54 (1).jpeg"},
   {n:"Sezar salatı (toyuq)",p:8,c:"salat",desc:"Toyuq, kahı, parmesan, sezar sous"},
   {n:"Sezar salatı (krevetka)",p:12,c:"salat",desc:"Krevetka, kahı, parmesan, sezar sous"},
@@ -236,6 +234,8 @@ const products=[
   {n:"Yuppiland Ailə Çay Seti – 15 AZN",p:15,c:"cay",desc:"2 çaynik çay, Türk paxlavası, Mürəbbə çeşid, Künəfə menyu"}
 ];
 
+  
+
 let cart=[];
 
 function render(list){
@@ -245,7 +245,7 @@ function render(list){
     if(p.n.toLowerCase().includes(searchTerm)){
       menu.innerHTML+=`
       <div class="card">
-        <img src="${img}">
+        <img src="${p.img}">
         <div class="info">
           <h3>${p.n}</h3>
           <p>${p.desc}</p>
@@ -286,12 +286,6 @@ function closeCart(){document.getElementById("modal").style.display="none";}
 
 function toggleDark(){
   document.body.classList.toggle("dark");
-  const icon = document.getElementById("darkIcon");
-  if(document.body.classList.contains("dark")){
-      icon.src = "/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png"; 
-  }else{
-      icon.src = "/mnt/data/dc4dc128-9ae1-44ae-b55b-6dba67e012ec.png"; 
-  }
 }
 
 document.getElementById("searchInput").addEventListener("input",()=>render(products));
